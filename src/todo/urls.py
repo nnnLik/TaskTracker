@@ -26,6 +26,8 @@ urlpatterns = [
         TaskGlobalCategoryView.as_view(),
         name="task-global-category",
     ),
-    path("task-user-category/", TaskUserCategoryView.as_view(), name="task-user-category"),
+    path(
+        "task-user-category/", TaskUserCategoryView.as_view(), name="task-user-category"
+    ),
     path("", include(router_report.urls)),
 ]

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models.task import Task
-from .models.other import (
+from .models import (
+    Task,
     GlobalCategory,
     UserCategory,
     TaskGlobalCategory,
