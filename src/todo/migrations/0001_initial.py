@@ -6,7 +6,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,63 +14,149 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='GlobalCategory',
+            name="GlobalCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
             ],
             options={
-                'db_table': 'global_category',
+                "db_table": "global_category",
             },
         ),
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('description', models.TextField()),
-                ('priority', models.CharField(choices=[('LOW', 'Low'), ('NORMAL', 'Normal'), ('HIGH', 'High')], default='NORMAL', max_length=6, verbose_name='Priority')),
-                ('due_date', models.DateTimeField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200)),
+                ("description", models.TextField()),
+                (
+                    "priority",
+                    models.CharField(
+                        choices=[
+                            ("LOW", "Low"),
+                            ("NORMAL", "Normal"),
+                            ("HIGH", "High"),
+                        ],
+                        default="NORMAL",
+                        max_length=6,
+                        verbose_name="Priority",
+                    ),
+                ),
+                ("due_date", models.DateTimeField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "author",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Task',
-                'verbose_name_plural': 'Tasks',
-                'db_table': 'task',
+                "verbose_name": "Task",
+                "verbose_name_plural": "Tasks",
+                "db_table": "task",
             },
         ),
         migrations.CreateModel(
-            name='UserCategory',
+            name="UserCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'db_table': 'user_category',
+                "db_table": "user_category",
             },
         ),
         migrations.CreateModel(
-            name='TaskUserCategory',
+            name="TaskUserCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todo.task')),
-                ('user_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todo.usercategory')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="todo.task"
+                    ),
+                ),
+                (
+                    "user_category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="todo.usercategory",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'task_user_category',
+                "db_table": "task_user_category",
             },
         ),
         migrations.CreateModel(
-            name='TaskGlobalCategory',
+            name="TaskGlobalCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('global_category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todo.globalcategory')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todo.task')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "global_category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="todo.globalcategory",
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="todo.task"
+                    ),
+                ),
             ],
             options={
-                'db_table': 'task_global_category',
+                "db_table": "task_global_category",
             },
         ),
     ]
