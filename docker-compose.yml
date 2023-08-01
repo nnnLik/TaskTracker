@@ -25,8 +25,12 @@ services:
     depends_on:
       - database
       - redis
+      - celery
     command: >
-      sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      sh -c "
+      python manage.py makemigrations --noinput &&
+      python manage.py migrate  --noinput &&
+      python manage.py runserver 0.0.0.0:8000"
 
   redis:
     image: redis:7.0.12-alpine
@@ -36,6 +40,33 @@ services:
       - "6379:6379"
     sysctls:
       - net.core.somaxconn=250
+
+  celery:
+    build: .
+    container_name: celery
+    volumes:
+      - .:/usr/src/app/
+    env_file:
+      - ./.env
+    depends_on:
+      - database
+      - redis
+    command: celery -A config worker --loglevel=info
+
+  flower:
+    build:
+      context: .
+    env_file:
+      - ./.env
+    container_name: flower
+    command: celery -A config flower
+    depends_on:
+      - redis
+      - celery
+      - database
+      - server
+    ports:
+      - 5555:5555
   
 volumes:
   db-data:
