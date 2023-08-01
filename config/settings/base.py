@@ -25,6 +25,9 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_yasg",
     "src.todo",
+    "src.core",
+    "src.tasks",
+    "src.notification",
 ]
 
 TEMPLATES = [

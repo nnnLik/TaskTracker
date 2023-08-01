@@ -1,8 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from rest_framework import generics, permissions, filters
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.pagination import LimitOffsetPagination
+
+from config.settings.const import MINUTE, HOUR
+
+from src.core.mixins import CachePagePerUserMixin
 
 from .models import (
     Task,
@@ -20,8 +26,7 @@ from .serializers import (
 )
 
 
-class TaskModelView(ModelViewSet):
-    queryset = Task.objects.all()
+class TaskModelView(CachePagePerUserMixin, ModelViewSet):
     serializer_class = TaskModelSerializer
     pagination_class = LimitOffsetPagination
     permission_classes = [permissions.IsAuthenticated]
@@ -42,7 +47,6 @@ class TaskModelView(ModelViewSet):
 
 
 class GlobalCategoryView(ModelViewSet):
-    queryset = GlobalCategory.objects.all()
     serializer_class = GlobalCategoryModelSerializer
     permission_classes_by_action = {
         "create": [permissions.IsAdminUser()],
@@ -67,6 +71,9 @@ class GlobalCategoryView(ModelViewSet):
 
     def get_permissions(self):
         return self.permission_classes_by_action.get(self.action)
+
+    def get_queryset(self):
+        return GlobalCategory.objects.all()
 
 
 class UserCategoryView(ModelViewSet):
@@ -101,6 +108,10 @@ class TaskGlobalCategoryView(generics.ListCreateAPIView):
     ordering_fields = ["task"]
     ordering = ["task"]
 
+    @method_decorator(cache_page(HOUR * 2))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class TaskUserCategoryView(generics.ListCreateAPIView):
     queryset = TaskUserCategory.objects.all()
@@ -111,3 +122,7 @@ class TaskUserCategoryView(generics.ListCreateAPIView):
     search_fields = ["task"]
     ordering_fields = ["task"]
     ordering = ["task"]
+
+    @method_decorator(cache_page(MINUTE * 15))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
